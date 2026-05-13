@@ -80,6 +80,69 @@ const galleryImgs = [
 
   updateZoomImage();
 
+  // Modals
+  const modalBackdrop = document.getElementById('modalBackdrop');
+  const modalTriggers = document.querySelectorAll('[data-modal-target]');
+  const modalCloseButtons = document.querySelectorAll('[data-modal-close]');
+  const modals = document.querySelectorAll('.modal');
+  let activeModal = null;
+
+  function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal || !modalBackdrop) return;
+
+    activeModal = modal;
+    document.body.classList.add('modal-open');
+    modalBackdrop.classList.add('show');
+    modalBackdrop.setAttribute('aria-hidden', 'false');
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
+
+    const firstInput = modal.querySelector('input');
+    if (firstInput) firstInput.focus();
+  }
+
+  function closeModal() {
+    if (!activeModal || !modalBackdrop) return;
+
+    activeModal.classList.remove('show');
+    activeModal.setAttribute('aria-hidden', 'true');
+    modalBackdrop.classList.remove('show');
+    modalBackdrop.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+    activeModal = null;
+  }
+
+  modalTriggers.forEach(trigger => {
+    trigger.addEventListener('click', () => openModal(trigger.dataset.modalTarget));
+  });
+
+  modalCloseButtons.forEach(button => {
+    button.addEventListener('click', closeModal);
+  });
+
+  if (modalBackdrop) {
+    modalBackdrop.addEventListener('click', closeModal);
+  }
+
+  modals.forEach(modal => {
+    modal.addEventListener('click', event => {
+      if (event.target === modal) closeModal();
+    });
+
+    const form = modal.querySelector('form');
+    if (form) {
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        closeModal();
+      });
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeModal();
+  });
+
   // FAQ
   function toggleFAQ(el) {
     const item = el.closest('.faq-item');

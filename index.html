@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-
 </head>
 <body>
 
@@ -208,7 +207,7 @@
         <div class="spec-value"><span class="india-flag">🇮🇳</span> India</div>
       </div>
     </div>
-    <button class="btn-download">
+    <button class="btn-download" data-modal-target="datasheetModal">
       <svg viewBox="0 0 24 24"><path d="M12 16l4-4h-3V4h-2v8H8l4 4zM4 18v2h16v-2H4z"/></svg>
       Download Full Technical Datasheet
     </button>
@@ -266,7 +265,7 @@
     </div>
   </div>
   <div class="quote-cta">
-    <button class="btn-primary">Request a Quote</button>
+    <button class="btn-primary" data-modal-target="quoteModal">Request a Quote</button>
   </div>
 </section>
 
@@ -689,6 +688,57 @@
     </div>
   </div>
 </footer>
+
+<!-- MODALS -->
+<div class="modal-backdrop" id="modalBackdrop" aria-hidden="true"></div>
+
+<div class="modal" id="datasheetModal" role="dialog" aria-modal="true" aria-labelledby="datasheetModalTitle" aria-hidden="true">
+  <div class="modal-panel">
+    <button class="modal-close" type="button" aria-label="Close popup" data-modal-close>&times;</button>
+    <h2 id="datasheetModalTitle">Let us email the entire catalog to you</h2>
+    <form class="modal-form">
+      <label>
+        Email
+        <input type="email" name="email" placeholder="Enter your email" required>
+      </label>
+      <label>
+        Phone Number
+        <input type="tel" name="phone" placeholder="Enter your phone number" required>
+      </label>
+      <div class="modal-actions">
+        <button class="btn-primary" type="submit">Download Brochure</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle" aria-hidden="true">
+  <div class="modal-panel">
+    <button class="modal-close" type="button" aria-label="Close popup" data-modal-close>&times;</button>
+    <h2 id="quoteModalTitle">Request a call back</h2>
+    <form class="modal-form">
+      <label>
+        Full Name
+        <input type="text" name="fullName" placeholder="Enter your full name" required>
+      </label>
+      <label>
+        Company Name
+        <input type="text" name="companyName" placeholder="Enter your company name" required>
+      </label>
+      <label>
+        Email
+        <input type="email" name="email" placeholder="Enter your email" required>
+      </label>
+      <label>
+        Phone Number
+        <input type="tel" name="phone" placeholder="Enter your phone number" required>
+      </label>
+      <div class="modal-actions">
+        <button class="btn-primary" type="submit">Submit Form</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
