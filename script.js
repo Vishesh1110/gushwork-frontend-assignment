@@ -10,6 +10,9 @@ const galleryImgs = [
   let currentImg = 0;
   const mainImg = document.getElementById('mainImg');
   const thumbsEl = document.getElementById('thumbs');
+  const galleryMain = document.querySelector('.gallery-main');
+  const zoomLens = document.getElementById('zoomLens');
+  const imageZoomPopup = document.getElementById('imageZoomPopup');
 
   function renderThumbs() {
     thumbsEl.innerHTML = '';
@@ -24,6 +27,7 @@ const galleryImgs = [
 
   function updateGallery() {
     mainImg.src = galleryImgs[currentImg];
+    updateZoomImage();
     document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === currentImg));
   }
 
@@ -33,6 +37,48 @@ const galleryImgs = [
   }
 
   renderThumbs();
+
+  function updateZoomImage() {
+    if (!imageZoomPopup || !mainImg) return;
+    imageZoomPopup.style.backgroundImage = `url("${mainImg.src}")`;
+  }
+
+  function moveZoomPreview(event) {
+    if (!galleryMain || !zoomLens || !imageZoomPopup || window.innerWidth <= 1024) return;
+
+    const rect = galleryMain.getBoundingClientRect();
+    const x = Math.min(Math.max(event.clientX - rect.left, 0), rect.width);
+    const y = Math.min(Math.max(event.clientY - rect.top, 0), rect.height);
+    const xPercent = (x / rect.width) * 100;
+    const yPercent = (y / rect.height) * 100;
+
+    zoomLens.style.left = `${x}px`;
+    zoomLens.style.top = `${y}px`;
+    imageZoomPopup.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
+  }
+
+  function showZoomPreview(event) {
+    if (!galleryMain || !imageZoomPopup || window.innerWidth <= 1024) return;
+    updateZoomImage();
+    galleryMain.classList.add('zooming');
+    imageZoomPopup.classList.add('show');
+    moveZoomPreview(event);
+  }
+
+  function hideZoomPreview() {
+    if (!galleryMain || !imageZoomPopup) return;
+    galleryMain.classList.remove('zooming');
+    imageZoomPopup.classList.remove('show');
+  }
+
+  if (galleryMain) {
+    galleryMain.addEventListener('mouseenter', showZoomPreview);
+    galleryMain.addEventListener('mousemove', moveZoomPreview);
+    galleryMain.addEventListener('mouseleave', hideZoomPreview);
+    window.addEventListener('resize', hideZoomPreview);
+  }
+
+  updateZoomImage();
 
   // FAQ
   function toggleFAQ(el) {
